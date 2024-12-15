@@ -1,3 +1,15 @@
+terraform {
+  required_providers {
+    template = {
+      source = "hashicorp/template"
+      version = "2.2.0"
+    }
+  }
+}
+
+provider "template" {
+  # Configuration options
+}
 provider "aws" {
   region = var.aws_region
 }
@@ -84,14 +96,3 @@ resource "aws_cloudwatch_log_metric_filter" "billing_logs" {
   # Note: Detailed billing logs must be enabled in AWS to use this resource.
 }
 
-
-# Outputs for easier management and monitoring
-output "sns_topic_arn" {
-  description = "The ARN of the SNS topic for billing alerts"
-  value       = aws_sns_topic.billing_alert.arn
-}
-
-output "cloudwatch_alarm_names" {
-  description = "List of CloudWatch alarm names"
-  value       = [for alarm in aws_cloudwatch_metric_alarm.estimated_charges : alarm.alarm_name]
-}
